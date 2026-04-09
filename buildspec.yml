@@ -3,28 +3,30 @@ version: 0.2
 env:
   parameter-store:
     DOCKER_REGISTRY_USERNAME: /nahid-app/docker-credentials/username
-    DOCKER_REGISTRY_PASSWORD: /nahid-app/docker-credentials/password 
+    DOCKER_REGISTRY_PASSWORD: /nahid-app/docker-credentials/password
 phases:
   install:
     runtime-versions:
       python: 3.11
+    commands:
+    - echo "Checking environment..."
   pre_build:
     commands:
-      - echo "Installing dependencies..."
-      - pip install -r requirements.txt
-      - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-      - IMAGE_NAME="$DOCKER_REGISTRY_USERNAME/simple-python-flask-app"
+    - echo "Installing dependencies..."
+    - pip install -r requirements.txt
+    - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+    - IMAGE_NAME="$DOCKER_REGISTRY_USERNAME/simple-python-flask-app"
   build:
     commands:
-      - echo "Running tests..."
-      - echo "Building Docker image..." 
-      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
-      - docker build -t "$IMAGE_NAME:$TAG" -t "$IMAGE_NAME:latest" .
-      - docker push "$IMAGE_NAME:$TAG"
-      - docker push "$IMAGE_NAME:latest"
+    - echo "Running tests..."
+    - echo "Building Docker image..."
+    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
+    - docker build -t "$IMAGE_NAME:$TAG" -t "$IMAGE_NAME:latest" .
+    - docker push "$IMAGE_NAME:$TAG"
+    - docker push "$IMAGE_NAME:latest"
   post_build:
     commands:
-      - echo "Build completed successfully!"
-  artifacts:
-    files:
-      - '**/*' 
+    - echo "Build completed successfully!"
+artifacts:
+  files:
+  - '**/*'
