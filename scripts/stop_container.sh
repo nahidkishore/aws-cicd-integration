@@ -2,12 +2,9 @@
 set -e
 
 # Stop and remove the container if it exists
-
-# Stop and remove running container (if any)
-containerid=$(docker ps -q)
-if [ -n "$containerid" ]; then
-  docker rm -f $containerid
-  echo "Removed running container: $containerid"
+if [ "$(docker ps -aq -f name=flask-app)" ]; then
+    echo "Stopping and removing existing container: flask-app"
+    docker rm -f flask-app
 else
-  echo "No running containers to remove."
+    echo "No container named flask-app found."
 fi
