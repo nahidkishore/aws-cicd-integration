@@ -4,7 +4,7 @@ set -e
 # Pull the latest image
 # Note: Ensure your Docker Hub username is hardcoded here or fetched from SSM 
 # because CodeBuild environment variables don't persist to the EC2 instance.
-DOCKER_IMAGE="nahidkishore/simple-python-flask-app:latest"
+DOCKER_IMAGE="nahid0002/simple-python-flask-app:latest"
 
 docker pull "$DOCKER_IMAGE"
 
